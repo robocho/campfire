@@ -8,6 +8,8 @@ var _ = require("underscore");
 var Channel = require('./models/channels');
 const port = 3000;
 
+//setting up express & handlebars
+
 var app = express();
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -29,27 +31,29 @@ mongoose.connection.on('error', function() {
 })
 
 
-
 app.get('/',function(req,res){
-	var new_channel = new Channel({name: "my channel", genre: "pop",date_created: Date.now(), queue: ["www.youtube.com/dasd", "www.youtube.com/dasd"]});
+	var new_channel = new Channel({
+		name: "my channel", 
+		genre: "pop", 
+		date_created: Date.now(), 
+		queue: ["www.youtube.com/dasd", "www.youtube.com/dasd"]
+	});
 	new_channel.save(function(err){
-		if(err) {
-			console.log("ERROR")
-			
-		}
-		console.log("wowHO")
-	})
+		if(err) { console.log("ERROR") }
+		console.log("wowHO");
+	});
 	//collection.insertOne(new_channel)
 	//console.log(Channel.findOne());
-	res.render('home');
+	res.render('home', {});
 });
 
-app.get('/:channel_name', function(req, res){
-
-	
+app.get('/show', function(req, res){
+	Channel.find({}, function(err, channels) {
+		if (err) { throw err };
+		res.send(channels);
+	});
 }) 
 app.listen(port, function() {
 	console.log("listening on port 3000!");
 
-	
 });
