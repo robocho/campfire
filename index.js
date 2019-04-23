@@ -17,46 +17,27 @@ app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
 
 
-//setting up mongo connection
+//setting up mongoose connection
 
-const MongoClient = require("mongodb").MongoClient;
 const dbuser = process.env.CAMPFIREMONGODBUSER;
 const dbpass = process.env.CAMPFIREMONGODBPASSWORD;
 const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-ipths.mongodb.net/test?retryWrites=true`;
-mongoose.connect(uri);
+mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
 	process.exit(1);
 })
 
-//environment variables
 
-
-const client = new MongoClient(uri, { useNewUrlParser: true });
-let database;
-let collection;
-
-
-
-
-client.connect((err, client) => {
-	if(err) {
-		console.log(err)
-		return;
-	}
-	database = client.db("campfire"); //database name
-  	collection = database.collection("data"); //collection name
-  	console.log("connected to database sucessful")
-
-});
 
 app.get('/',function(req,res){
 	var new_channel = new Channel({name: "my channel", genre: "pop",date_created: Date.now(), queue: ["www.youtube.com/dasd", "www.youtube.com/dasd"]});
 	new_channel.save(function(err){
 		if(err) {
-			throw err
+			console.log("ERROR")
+			
 		}
-		return res.send("succefully added schema to database")
+		console.log("wowHO")
 	})
 	//collection.insertOne(new_channel)
 	//console.log(Channel.findOne());

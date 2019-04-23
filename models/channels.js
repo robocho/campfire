@@ -15,4 +15,4 @@ var ChannelSchema = new Schema(
 //Export model - compiles a model
 // instances of models are called documents
 var Channel = mongoose.model('Channel', ChannelSchema);
-module.exports = {Channel}
+module.exports = Channel
