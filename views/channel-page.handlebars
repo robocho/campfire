@@ -1,0 +1,21 @@
+<style>
+    h2 {
+        color: coral;
+    }
+</style>
+
+<br>
+{{#each channel}}
+<h2>{{this.name}} channel</h2>
+<p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
+<br>
+<h2>Playlist</h2>
+<ol>
+    {{#each this.queue as |song_url|}}
+    <li>{{song_url}}</li>
+    {{/each}}
+</ol>
+{{/each}}
+<section>
+    <iframe width="560" height="315" src={{current_song}} allow="autoplay; encrypted-media"></iframe>
+</section>

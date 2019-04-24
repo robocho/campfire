@@ -32,20 +32,61 @@ mongoose.connection.on('error', function() {
 
 
 app.get('/',function(req,res){
-	var new_channel = new Channel({
-		name: "my channel", 
-		genre: "pop", 
-		date_created: Date.now(), 
-		queue: ["www.youtube.com/dasd", "www.youtube.com/dasd"]
+	var ch = []
+
+	function getChannelData(callback) {
+		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
+		Channel.find({}, function(err, channels) {
+			if (err) { throw err };
+			ch = channels;
+			callback();
+		});
+	}
+
+	app.post('/', function(req, res){
+		var body = req.body;
+		var new_channel = new Channel({
+			name: body.name,
+			genre: body.genre,
+			date_created: Date.now(),
+			queue: [body.song],
+			current_song: ''
+		});
+		new_channel.save(function err(){
+			if(err) { console.log("ERROR") }
+		});
+		res.redirect('/show');
 	});
-	new_channel.save(function(err){
-		if(err) { console.log("ERROR") }
-		console.log("wowHO");
+	
+	getChannelData(function(){
+		res.render('home', {channels: ch});
 	});
-	//collection.insertOne(new_channel)
-	//console.log(Channel.findOne());
-	res.render('home', {});
 });
+
+app.get('/channel/:name', function(req,res){
+	var ch = {};
+	function getChannelData(callback) {
+		Channel.find({name: req.params.name}, function(err, channel){
+			if (err) { throw err; }
+			ch = channel;
+			callback();
+		});
+	}
+	getChannelData(function(){
+		res.render('channel-page', {channel: ch, current_song: ch[0].queue[0]});
+	});
+});
+
+// app.get('/channel/:channel-name', function(req,res){
+// 	var ch = {};
+// 	var channel_name = req.params.channel-name;
+// 	Channel.find({name: channel_name}, function(err, channels) {
+// 		if (err) { throw err };
+// 		res.send(channels);
+// 		// ch = channels;
+// 	});
+// 	// res.render('channel-page', {data: ch});
+// });
 
 app.get('/show', function(req, res){
 	Channel.find({}, function(err, channels) {
