@@ -92,7 +92,7 @@ app.get('/channel/:name', function(req,res){
 app.get('/show', function(req, res){
 	Channel.find({}, function(err, channels) {
 		if (err) { throw err };
-		res.send(channels);
+		res.render('show', {ch: JSON.stringify(channels, null, 2)});
 	});
 }) 
 app.listen(port, function() {
