@@ -34,6 +34,7 @@ mongoose.connection.on('error', function() {
 app.get('/',function(req,res){
 	var ch = []
 
+	// Callback function to wait for channel data from DB before rendering page
 	function getChannelData(callback) {
 		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
 		Channel.find({}, function(err, channels) {
@@ -45,11 +46,20 @@ app.get('/',function(req,res){
 
 	app.post('/', function(req, res){
 		var body = req.body;
+		var videoURL = req.body.song;
+		
+		// check if the videoURL exists, then extract the video paramter and construct an embeded video link
+		// set autoplay=1 parameter to play video on page load
+		if (videoURL != '') {
+			var param = videoURL.split('v=')[1];
+			videoURL = "https://www.youtube.com/embed/" + param + "?autoplay=1";
+		}
+
 		var new_channel = new Channel({
 			name: body.name,
 			genre: body.genre,
 			date_created: Date.now(),
-			queue: [body.song],
+			queue: [videoURL],
 			current_song: ''
 		});
 		new_channel.save(function err(){
@@ -65,6 +75,8 @@ app.get('/',function(req,res){
 
 app.get('/channel/:name', function(req,res){
 	var ch = {};
+	// Callback function to wait for channel data from DB before rendering page
+	// Match :name parameter with a channel name, save that channel, and render the page with its data
 	function getChannelData(callback) {
 		Channel.find({name: req.params.name}, function(err, channel){
 			if (err) { throw err; }
@@ -76,17 +88,6 @@ app.get('/channel/:name', function(req,res){
 		res.render('channel-page', {channel: ch, current_song: ch[0].queue[0]});
 	});
 });
-
-// app.get('/channel/:channel-name', function(req,res){
-// 	var ch = {};
-// 	var channel_name = req.params.channel-name;
-// 	Channel.find({name: channel_name}, function(err, channels) {
-// 		if (err) { throw err };
-// 		res.send(channels);
-// 		// ch = channels;
-// 	});
-// 	// res.render('channel-page', {data: ch});
-// });
 
 app.get('/show', function(req, res){
 	Channel.find({}, function(err, channels) {

@@ -40,9 +40,9 @@
       } else {
         $('.entry').hide();
         $('.entry').each(function(){
-            var coasterName = $(this).attr('id');
+            var channelName = $(this).attr('id');
             var re = new RegExp("^"+input,"g");
-            if (coasterName.match(re)) {
+            if (channelName.match(re)) {
                 $(this).show();
             }
         });
