@@ -1,1 +1,51 @@
-sad
+<style>
+    .entry {
+        background-color: coral;
+    }
+    h3 {
+        color: darkblue;
+    }
+</style>
+
+<form method="POST" action="/">
+  <fieldset>
+    <legend><h2>Add a channel</h2></legend>
+    Name: <i>Max 100 chars</i><br>
+    <input autofocus type='text' name='name'><br>
+    Genre: <i>Max 100 chars</i><br>
+    <input type='text' name='genre'><br>
+    Add a song to the queue:<br>
+    <input type='text' name='song'><br>
+    <br>
+    <input type='submit' value='Submit'><br>
+  </fieldset>
+</form>
+
+<h3>Search for Channels</h3>
+<input type="text" id='search' placeholder="Enter a channel name">
+<br>
+{{#each channels}}
+<div id='{{this.name}}' class="entry" onclick="location.href='/channel/{{this.name}}';">
+    <h4>{{this.name}}</h4>
+    <p>Genre: {{this.genre}}, Date created: {{this.date_created}}, Playing now: {{this.current_song}}</p>
+</div>
+<br>
+{{/each}}
+
+<script>
+    $('#search').on('input', function(e){
+      var input = $(e.target).val();
+      if(input === '') {
+        $('.entry').show();
+      } else {
+        $('.entry').hide();
+        $('.entry').each(function(){
+            var channelName = $(this).attr('id');
+            var re = new RegExp("^"+input,"g");
+            if (channelName.match(re)) {
+                $(this).show();
+            }
+        });
+      }
+    });
+</script>
