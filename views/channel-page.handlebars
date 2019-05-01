@@ -1,17 +1,26 @@
 <style>
     h2 {
-        color: coral;
+        color: darkblue;
+    }
+    .body {
+        background-color: blanchedalmond;
+    }
+    .channel-header-inner {
+        margin: 0 auto;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 85vw;
+        overflow: hidden;
     }
 
     #autoplay {
         color: red;
     }
-
     .video-frame {
         width: 580px;
         margin: 0 auto;
         text-align: center;
-        background-color: gold;
+        background-color: tomato;
     }
     #current-song {
         padding-top: 10px;
@@ -28,47 +37,51 @@
     #next {
         float: right;
     }
+
+    #add-song-form {
+        margin: 0;
+        padding-bottom: 10px;
+    }
 </style>
 
-<br>
-<div>
-    {{#each channel}}
-    <h2 id="channel-name">{{this.name}} channel</h2>
-    <p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
-    <br>
-    {{/each}}
-</div>
-<br>
-<div style="background-color: blanchedalmond">
-    <div class="video-frame">
-        <iframe id="current-song" width="560" height="315" src='' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        <div class="button-row">
-            <button id="prev">Prev</button>
-            <button id="next">Next</button>
-            <button id="autoplay">Autoplay: OFF</button>
-            <button id="playlist">Playlist</button>
-            <button id="add-song">+</button>
-        </div>
-    </div>
-    <div class="info-container">
+<div class="body">
+    <div class="channel-header-inner">
         {{#each channel}}
-            <h2>Playlist</h2>
-            <ol id="url-list">
-            {{#each this.queue as |song_url|}}
-                <li id='{{song_url}}'>{{song_url}}</li>
-            {{/each}}
-            </ol>
+            <h2 id="channel-name">{{this.name}} channel</h2>
+            <p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
         {{/each}}
     </div>
-    <div class="info-container">
-        <form id="add-song-form" method="POST" action="">
-        <fieldset>
-            <legend><h2>Add a song</h2></legend>
-            <input type='text' name='song'><br>
-            <br>
-            <input type='submit' value='Add'><br>
-        </fieldset>
-        </form>
+    <div>
+        <div class="video-frame">
+            <iframe id="current-song" width="560" height="315" src='' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="button-row">
+                <button id="prev">Prev</button>
+                <button id="next">Next</button>
+                <button id="autoplay">Autoplay: OFF</button>
+                <button id="playlist">Playlist</button>
+                <button id="add-song">+</button>
+            </div>
+        </div>
+        <div class="info-container">
+            {{#each channel}}
+                <h2>Playlist</h2>
+                <ol id="url-list">
+                {{#each this.queue as |song_url|}}
+                    <li id='{{song_url}}'>{{song_url}}</li>
+                {{/each}}
+                </ol>
+            {{/each}}
+        </div>
+        <div class="info-container">
+            <form id="add-song-form" method="POST" action="">
+            <fieldset>
+                <legend><h2>Add a song</h2></legend>
+                <input type='text' name='song'><br>
+                <br>
+                <input type='submit' value='Add'><br>
+            </fieldset>
+            </form>
+        </div>
     </div>
 </div>
 <script>
@@ -113,7 +126,7 @@
         if (currentSongIndex < 0) {
             currentSongIndex = urls.length - 1;
         }
-        
+
         var nextURLToPlay = urls[currentSongIndex];
         if (autoPlay) {
             nextURLToPlay += "?autoplay=1";

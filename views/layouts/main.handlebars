@@ -1,3 +1,34 @@
+<style>
+	body {
+		margin: 0;
+	}
+
+	#title {
+		color: white;
+		margin: 0;
+	}
+	.title-bar {
+		background-color: tomato;
+		text-align: center;
+		padding: 10px;
+	}
+	.nav-bar {
+		background-color: darkblue;
+		{{!-- text-align: center; --}}
+		padding: 10px;
+	}
+	.nav-bar ul {
+		margin: 0;
+	}
+	.nav-bar a {
+		padding-left: 10px;
+		padding-right: 10px;
+		font-size: 20px;
+		color: white;
+		text-decoration: none;
+	}
+</style>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,7 +37,15 @@
 </head>
 <body>
 
-<h1>Welcome to Campfire</h1>
+<div class="title-bar">
+	<h1 id="title">Welcome to Campfire</h1>
+</div>
+<div class="nav-bar">
+	<ul>
+		<a href="/">Home</a>
+		<a href="/">Channels</a>
+	</ul>
+</div>
 {{{body}}}
 
 </body>
