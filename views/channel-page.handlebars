@@ -2,18 +2,148 @@
     h2 {
         color: coral;
     }
+
+    #autoplay {
+        color: red;
+    }
+
+    .video-frame {
+        width: 580px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: gold;
+    }
+    #current-song {
+        padding-top: 10px;
+    }
+    .button-row {
+        width: 570px;
+        margin: 0 auto;
+        padding: 10px 5px;
+        overflow: hidden;
+    }
+    #prev {
+        float: left;
+    }
+    #next {
+        float: right;
+    }
 </style>
 
 <br>
-{{#each channel}}
-<h2>{{this.name}} channel</h2>
-<p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
-<br>
-<h2>Playlist</h2>
-<ol>
-    {{#each this.queue as |song_url|}}
-    <li>{{song_url}}</li>
+<div>
+    {{#each channel}}
+    <h2 id="channel-name">{{this.name}} channel</h2>
+    <p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
+    <br>
     {{/each}}
-</ol>
-{{/each}}
-<iframe width="560" height="315" src='{{current_song}}' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+<br>
+<div style="background-color: blanchedalmond">
+    <div class="video-frame">
+        <iframe id="current-song" width="560" height="315" src='' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="button-row">
+            <button id="prev">Prev</button>
+            <button id="next">Next</button>
+            <button id="autoplay">Autoplay: OFF</button>
+            <button id="playlist">Playlist</button>
+            <button id="add-song">+</button>
+        </div>
+    </div>
+    <div class="info-container">
+        {{#each channel}}
+            <h2>Playlist</h2>
+            <ol id="url-list">
+            {{#each this.queue as |song_url|}}
+                <li id='{{song_url}}'>{{song_url}}</li>
+            {{/each}}
+            </ol>
+        {{/each}}
+    </div>
+    <div class="info-container">
+        <form id="add-song-form" method="POST" action="">
+        <fieldset>
+            <legend><h2>Add a song</h2></legend>
+            <input type='text' name='song'><br>
+            <br>
+            <input type='submit' value='Add'><br>
+        </fieldset>
+        </form>
+    </div>
+</div>
+<script>
+    var urls = [];
+    var channelName = '';
+    var currentSongIndex = 0;
+    var autoPlay = false;
+
+    $(document).ready(function(){
+        // set [urls] equal to every song url in the queue
+        $('#url-list li').each(function(){
+            urls.push($(this).attr('id'));
+            console.log($(this).attr('id'));
+        });
+        // set channelName
+        channelName = $('#channel-name').text().split(" ")[0];
+        // set the iframe video to play the current song
+        $('#current-song').attr('src', urls[currentSongIndex]);
+
+        $('#add-song-form').attr('action', '/channel/'+channelName);
+        $('.info-container').hide();
+        console.log(urls);
+    });
+
+    // next button ~ switch to next song
+    $('#next').on('click', function(){
+        currentSongIndex += 1;
+        if (currentSongIndex >= urls.length) {
+            currentSongIndex = 0;
+        }
+
+        var nextURLToPlay = urls[currentSongIndex];
+        if (autoPlay) {
+            nextURLToPlay += "?autoplay=1";
+        }
+        $('#current-song').attr('src', nextURLToPlay);
+    });
+
+    // prev button ~ switch to previous song
+    $('#prev').on('click', function(){
+        currentSongIndex -= 1;
+        if (currentSongIndex < 0) {
+            currentSongIndex = urls.length - 1;
+        }
+        
+        var nextURLToPlay = urls[currentSongIndex];
+        if (autoPlay) {
+            nextURLToPlay += "?autoplay=1";
+        }
+        $('#current-song').attr('src', nextURLToPlay);
+    });
+
+    // playlist button ~ display playlist (queue) for channel
+    // ** Fix this to make it display right of the video? **
+    // ** Make this display the playlist or the add song box depending on which button is pressed **
+    $('#playlist').on('click', function(){
+        if ($('.info-container').is(':hidden')) {
+            $('.info-container').show();
+            $(window).scrollTop($('.info-container').offset().top);
+            {{!-- $('.video-frame').css('margin-left', '5%') --}}
+        } else {
+            $('.info-container').hide();
+            {{!-- $('.video-frame').css('margin-left', 'auto') --}}
+        }
+    });
+
+    $('#autoplay').on('click', function(){
+        if (autoPlay) {
+            autoPlay = false;
+            $(this).html('Autoplay: OFF');
+            $(this).css('color', 'red');
+        } else {
+            autoPlay = true;
+            $(this).html('Autoplay: ON');
+            $(this).css('color', 'green');
+        }
+    });
+</script>

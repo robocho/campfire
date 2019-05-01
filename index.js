@@ -49,10 +49,9 @@ app.get('/',function(req,res){
 		var videoURL = req.body.song;
 		
 		// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-		// set autoplay=1 parameter to play video on page load
 		if (videoURL != '') {
 			var param = videoURL.split('v=')[1];
-			videoURL = "https://www.youtube.com/embed/" + param + "?autoplay=1";
+			videoURL = "https://www.youtube.com/embed/" + param;
 		}
 
 		var new_channel = new Channel({
@@ -60,7 +59,7 @@ app.get('/',function(req,res){
 			genre: body.genre,
 			date_created: Date.now(),
 			queue: [videoURL],
-			current_song: ''
+			current_song: videoURL
 		});
 		new_channel.save(function err(){
 			if(err) { console.log("ERROR") }
@@ -75,17 +74,54 @@ app.get('/',function(req,res){
 
 app.get('/channel/:name', function(req,res){
 	var ch = {};
+	var chCurrentSong = '';
 	// Callback function to wait for channel data from DB before rendering page
 	// Match :name parameter with a channel name, save that channel, and render the page with its data
 	function getChannelData(callback) {
 		Channel.find({name: req.params.name}, function(err, channel){
 			if (err) { throw err; }
 			ch = channel;
+			chCurrentSong = channel.current_song;
 			callback();
 		});
 	}
+
+	// This post method adds a song to the channel's queue
+	app.post('/channel/:name', function(req, res){
+		var channelName = req.params.name;
+		var videoURL = req.body.song;
+		var goBack = '/channel/' + channelName;
+		var channel = {};
+
+		if (videoURL != '') {
+			var param = videoURL.split('v=')[1];
+			videoURL = "https://www.youtube.com/embed/" + param;
+
+			function findChannel(callback) {
+				Channel.find({name: channelName}, function(err, ch){
+					if (err) { throw err; }
+					channel = ch[0];
+					callback();
+				})
+			}
+
+			findChannel(function(){
+				Channel.update(				// use updateOne() because update() is deprecated?
+					{_id: channel._id},
+					{$push: {queue: videoURL} },
+					function(err) {
+						if (err) { console.log("ERROR") }
+					}
+				);
+				res.redirect(goBack); 		// Add an acknowledgement that the song was added successfully
+			});
+		} else {
+			res.redirect(goBack); 		// Display error to user saying why song url was invlaid
+		}
+	});
+
 	getChannelData(function(){
-		res.render('channel-page', {channel: ch, current_song: ch[0].queue[0]});
+		res.render('channel-page', {channel: ch, current_song: chCurrentSong});
 	});
 });
 
