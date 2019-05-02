@@ -1,51 +1,66 @@
-<style>
-    .entry {
-        background-color: blanchedalmond;
-    }
-    h3 {
-        color: darkblue;
-    }
-</style>
 
-<form method="POST" action="/">
-  <fieldset>
-    <legend><h2>Add a channel</h2></legend>
-    Name: <i>Max 100 chars</i><br>
-    <input autofocus type='text' name='name'><br>
-    Genre: <i>Max 100 chars</i><br>
-    <input type='text' name='genre'><br>
-    Add a song to the queue:<br>
-    <input type='text' name='song'><br>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/home.css">
+    <script src="/public/js/main.js"></script>
+    <!--===============================================================================================-->  
+    <link rel="icon" type="image/png" href="/public/table/images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/animate/animate.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/perfect-scrollbar/perfect-scrollbar.css">
+<!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="/public/table/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+
+    <h2 id = "browse">Browse </h2>
+    <div id = "browse-divider"></div>
+
+    <h3 id = "recent">Recent</h3>
     <br>
-    <input type='submit' value='Submit'><br>
-  </fieldset>
-</form>
 
-<h3>Search for Channels</h3>
-<input type="text" id='search' placeholder="Enter a channel name">
-<br>
-{{#each channels}}
-<div id='{{this.name}}' class="entry" onclick="location.href='/channel/{{this.name}}';">
-    <h4>{{this.name}}</h4>
-    <p>Genre: {{this.genre}}, Date created: {{this.date_created}}, Playing now: {{this.current_song}}</p>
-</div>
-<br>
-{{/each}}
+            <div class="wrap-table100">
+                <div class="table100">
+                    <table id = "channel_table">
+                        <thead>
+                            <tr class="table100-head">
+                                <th class="column1">Channel</th>
+                                <th class="column2">Date Created</th>
+                                <th class="column3">Genre</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each channels}}
+                                <tr onclick="location.href='/channel/{{this.name}}';">
+                                    <td class = "column1">{{this.name}} </td>
+                                    <td class = "column2">{{this.date_created}}</td>
+                                    <td class = "column3">{{this.genre}}</td>
+                                </tr>
+                            {{/each}}                 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    <script src="/public/table/vendor/jquery/jquery-3.2.1.min.js"></script>
 
-<script>
-    $('#search').on('input', function(e){
-      var input = $(e.target).val();
-      if(input === '') {
-        $('.entry').show();
-      } else {
-        $('.entry').hide();
-        $('.entry').each(function(){
-            var channelName = $(this).attr('id');
-            var re = new RegExp("^"+input,"g");
-            if (channelName.match(re)) {
-                $(this).show();
-            }
-        });
-      }
-    });
-</script>
+    <script src="/public/vendor/bootstrap/js/popper.js"></script>
+    <script src="/public/table/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/public/table/vendor/select2/select2.min.js"></script>
+
+    <script src="/public/table/js/main.js"></script>
+
+
+</body>
+</html>

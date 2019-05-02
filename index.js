@@ -19,6 +19,7 @@ app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
 
 
+
 //setting up mongoose connection
 
 const dbuser = process.env.CAMPFIREMONGODBUSER;
@@ -71,6 +72,9 @@ app.get('/',function(req,res){
 		res.render('home', {channels: ch});
 	});
 });
+app.get('/create', function(req, res) {
+	res.render('create')
+})
 
 app.get('/channel/:name', function(req,res){
 	var ch = {};
@@ -87,38 +91,35 @@ app.get('/channel/:name', function(req,res){
 	}
 
 	// This post method adds a song to the channel's queue
-	app.post('/channel/:name', function(req, res){
-		var channelName = req.params.name;
-		var videoURL = req.body.song;
-		var goBack = '/channel/' + channelName;
-		var channel = {};
-
-		if (videoURL != '') {
-			var param = videoURL.split('v=')[1];
-			videoURL = "https://www.youtube.com/embed/" + param;
-
-			function findChannel(callback) {
-				Channel.find({name: channelName}, function(err, ch){
-					if (err) { throw err; }
-					channel = ch[0];
-					callback();
-				})
-			}
-
-			findChannel(function(){
-				Channel.update(				// use updateOne() because update() is deprecated?
-					{_id: channel._id},
-					{$push: {queue: videoURL} },
-					function(err) {
-						if (err) { console.log("ERROR") }
-					}
-				);
-				res.redirect(goBack); 		// Add an acknowledgement that the song was added successfully
-			});
-		} else {
-			res.redirect(goBack); 		// Display error to user saying why song url was invlaid
+app.post('/channel/:name', function(req, res){
+	var channelName = req.params.name;
+	var videoURL = req.body.song;
+	var goBack = '/channel/' + channelName;
+	var channel = {};
+	if (videoURL != '') {
+		var param = videoURL.split('v=')[1];
+		videoURL = "https://www.youtube.com/embed/" + param;
+		function findChannel(callback) {
+			Channel.find({name: channelName}, function(err, ch){
+				if (err) { throw err; }
+				channel = ch[0];
+				callback();
+			})
 		}
-	});
+		findChannel(function(){
+			Channel.update(				// use updateOne() because update() is deprecated?
+				{_id: channel._id},
+				{$push: {queue: videoURL} },
+				function(err) {
+					if (err) { console.log("ERROR") }
+				}
+			);
+			res.redirect(goBack); 		// Add an acknowledgement that the song was added successfully
+		});
+	} else {
+		res.redirect(goBack); 		// Display error to user saying why song url was invlaid
+	}
+});
 
 	getChannelData(function(){
 		res.render('channel-page', {channel: ch, current_song: chCurrentSong});
