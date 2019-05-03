@@ -1,4 +1,4 @@
-  $('#search').on('input', function(e){
+  $('#search-element').on('input', function(e){
       var input = $(e.target).val();
       var filter = input.toUpperCase();
       var table, tr, td, i, txtValue;

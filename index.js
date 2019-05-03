@@ -8,15 +8,22 @@ var _ = require("underscore");
 var Channel = require('./models/channels');
 const port = 3000;
 
+
 //setting up express & handlebars
 
 var app = express();
+
+
+//setting up socket.io
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/partials/"}));
 app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
+
 
 
 
@@ -132,7 +139,29 @@ app.get('/show', function(req, res){
 		res.render('show', {ch: JSON.stringify(channels, null, 2)});
 	});
 }) 
-app.listen(port, function() {
-	console.log("listening on port 3000!");
 
+http.listen(3000, function() {
+    console.log('app listening on port 3000!');
 });
+
+var listeners = 0;
+
+io.on('connection', function(socket) {
+    console.log("new connection");
+    io.on('disconnect', function() {
+        console.log('disconnected');
+    });
+    socket.on('new listener', function(name) {
+    	io.emit('new listener', name);
+    	listeners += 1;
+        console.log(`new listner in channel: ${name}`);
+    });
+    socket.on('disconnected user', function(name){
+    	io.emit('disconnected user', name);
+    	listeners -= 1;
+    })
+    socket.on('home page loaded', function() {
+    	io.emit('get active listeners', listeners);
+    })
+
+})

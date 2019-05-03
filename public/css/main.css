@@ -1,7 +1,6 @@
 	body {
 		margin: 0;
 		color: black;
-		font-family: 'Montserrat', sans-serif;
 	}
 
 	#title {
@@ -44,5 +43,9 @@
 		position: absolute;
 		top: 25px;
 		right: 15px;
+		width: 30%;
+
 	}
+	
+
 
