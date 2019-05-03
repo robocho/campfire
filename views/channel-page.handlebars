@@ -114,10 +114,6 @@
     window.onbeforeunload = function (e) {
         socket.emit('disconnected user', channelName)
     }
-    
-
-        
-
     // next button ~ switch to next song
     $('#next').on('click', function(){
         currentSongIndex += 1;

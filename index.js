@@ -6,6 +6,7 @@ var mongoose = require('mongoose')
 var exphbs = require('express-handlebars');
 var _ = require("underscore");
 var Channel = require('./models/channels');
+require('dotenv').config()
 const port = 3000;
 
 
