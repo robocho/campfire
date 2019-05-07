@@ -141,6 +141,10 @@ app.get('/show', function(req, res){
 	});
 }) 
 
+app.get('/about', function(req, res) {
+	res.render('about');
+})
+
 http.listen(3000, function() {
     console.log('app listening on port 3000!');
 });
