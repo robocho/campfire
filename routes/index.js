@@ -3,6 +3,8 @@ var router = express.Router();
 var Channel = require('../models/channels');
 var Song = require('../models/song')
 
+var getYoutubeTitle = require('get-youtube-title')
+
 /* GET home page. */
 router.get('/',function(req,res){
 	var ch = []
@@ -22,11 +24,43 @@ router.post('/', function(req, res){
 	var videoURL = req.body.song;
 	
 	// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-	if (videoURL != '') {
-		var param = videoURL.split('v=')[1];
-		videoURL = "https://www.youtube.com/embed/" + param;
+	async function getTitle() {
+		var title = "";
+		if (videoURL != '') {
+			var param = videoURL.split('v=')[1];
+			videoURL = "https://www.youtube.com/embed/" + param;
+		}
+
+		let promise = new Promise((resolve, reject) => {
+    		getYoutubeTitle(param, function (err, t) {
+  				resolve(t)
+			})
+  		});
+
+  		title = await promise;
+
+  		var new_song = new Song({title: title, mp3_link: videoURL});
+
+		var new_channel = new Channel({
+			name: body.name,
+			genre: body.genre,
+			date_created: Date.now(),
+			queue: [new_song],
+			current_song: videoURL,
+			active: 0,
+			comments: []
+		});
+		new_channel.save(function err(){
+			if(err) { console.log("ERROR") }
+		});
+		res.redirect('/');
 	}
-	var new_song = new Song({mp3_link: videoURL});
+	
+	getTitle()
+
+	/*
+	var new_song = new Song({title: title, mp3_link: videoURL});
+
 	var new_channel = new Channel({
 		name: body.name,
 		genre: body.genre,
@@ -40,6 +74,7 @@ router.post('/', function(req, res){
 		if(err) { console.log("ERROR") }
 	});
 	res.redirect('/');
+	*/
 });
 	
 getChannelData(function(){

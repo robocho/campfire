@@ -15,61 +15,86 @@ URL:
 
 ### 1. Data Format and Storage
 
-Data point fields:
-- `Field 1`:     Name       `Type: Number`
-- `Field 2`:     genre       `Type: String`
-- `Field 3`:     date_created       `Type: String`
-- `Field 4`:     queue       `Type: String`
-- `Field 6`:     active       `Type: Number`
-
-Schema: 
+Three Schemas: 
 ```javascript
 {
- var ChannelSchema = new Schema(
+var SongSchema = new Schema(
+  {
+    mp3_link: {type: String, required: true},
+  }
+);
+var CommentSchema = new Schema ({
+  name: {type: String, required: true, max: 100},
+  date_created: {type: Date},
+  comment: {type: String, required: true, max: 400},
+})
+
+
+var ChannelSchema = new Schema(
   {
     name: {type: String, required: true, max: 100},
     genre: {type: String, required: true, max: 100},
     date_created: {type: Date},
-    queue: {type: Array, "default" : [], required: true},
-    active: {type: Number}
+    queue: [SongSchema], 
+    active: {type: Number},
+    comments: [CommentSchema]
   }
 );
+
 }
 ```
 
-### 2. 
-### 2. Add New Data
+### 2. Live Updates
 
-HTML form route: `/`
+**Socket.io**:
+    **Active Users**: Campfire uses socket.io to communicate how many active listeners are in each channel. This number of active listeners in each channel is displayed in the main table of the home page
+    **Comments**: Campfire uses socket.io to communicate comments made in individual channels in real time
+    **Playlist**: Campfire uses socket.io to allow users to add mp3 links to the channel's queue, and have that addition boradcasted to others listening in the channel
 
-POST endpoint route: `/api/addItem`
+### 3. View Data
+    Each page is generated using handlebars
 
-Example Node.js POST request to endpoint: 
+### 4. API 
+
+POST Endpoint - Create a new channel
+
 ```javascript
-var request = require("request");
-
 var options = { 
     method: 'POST',
-    url: 'http://localhost:3000/api/...',
+    url: 'http://localhost:3000/api/v1/channels/...',
     headers: { 
         'content-type': 'application/x-www-form-urlencoded' 
     },
     form: { 
-       id: 202,
-       title: "lost iphone",
-       description: "I phone an iphone on the bench in front of mckeldin mall",
-       category: "phone",
-       location_found: "in front of mckeldin mall",
-       date_found: "05/02/2019"
+        name: {type: String, required: true, max: 100},
+        genre: {type: String, required: true, max: 100},
+        date_created: {type: Date},
+        queue: [SongSchema], 
+        active: {type: Number},
+        comments: [CommentSchema]
     } 
 };
-
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-
-  console.log(body);
-});
 ```
+DELETE Endpoint - Delete a channel
+```javascript
+var options = { 
+    method: 'POST',
+    url: 'http://localhost:3000/api/v1/channels/:channelId/delete...',
+    headers: { 
+        'content-type': 'application/x-www-form-urlencoded' 
+    },
+    form: { 
+        id: {type: String, required: true, max: 100}
+    } 
+};
+```
+
+### 4. Modules 
+
+
+### 5. NPM Packages
+get-youtube-title
+get-youtube-id
 
 ### 3. View Data
 
