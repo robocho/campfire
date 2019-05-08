@@ -105,12 +105,10 @@ router.get('/show', function(req, res){
 	});
 }) 
 
-//TODO
 router.get('/filter', function(req, res) {
 	res.render('filter');
 })
 
-//TODO
 router.get('/filter/recentweek', function(req, res) {
 	var ch = []
 
@@ -134,7 +132,7 @@ router.get('/filter/recentweek', function(req, res) {
 			if (days_diff < 7) return true   //last two weeks
 			else return false		
 		});		
-		
+
 		ch = _.sortBy(ch, function(a, b) {
 			let a_date = new Date(a.date_created);
 			let b_date = new Date(b.date_created);
@@ -153,7 +151,6 @@ router.get('/filter/recentmonth', function(req, res) {
 
 	// Callback function to wait for channel data from DB before rendering page
 	function getChannelData(callback) {
-		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
 		Channel.find({}, function(err, channels) {
 			if (err) { throw err };
 			ch = channels;
@@ -187,7 +184,7 @@ router.get('/filter/recentmonth', function(req, res) {
 })
 
 //TODO
-router.get('/filter/popular', function(req, res) {
+router.get('/filter/mostpopular/:num', function(req, res) {
 	var ch = []
 
 	// Callback function to wait for channel data from DB before rendering page
@@ -201,9 +198,21 @@ router.get('/filter/popular', function(req, res) {
 	}
 
 	getChannelData(function(){
-		res.render('popular', {channels: ch});
+		ch = _.filter(ch, function(channel) {
+			if (channel.active && channel.active >= req.params.num) return true
+			else false 
+		});		
+
+		ch = _.sortBy(ch, function(a, b) {
+			return a.active - b.active;
+		});
+
+		ch = ch.reverse();
+
+		res.render('popular', {
+			channels: ch
+		});
 	});
-	//res.render('popular');
 })
 
 //TODO
