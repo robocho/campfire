@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Channel = require('../models/channels');
+var _ = require('underscore');
 
 /* GET home page. */
 router.get('/',function(req,res){
@@ -110,7 +111,7 @@ router.get('/filter', function(req, res) {
 })
 
 //TODO
-router.get('/filter/recent', function(req, res) {
+router.get('/filter/recentweek', function(req, res) {
 	var ch = []
 
 	// Callback function to wait for channel data from DB before rendering page
@@ -125,20 +126,64 @@ router.get('/filter/recent', function(req, res) {
 	
 	getChannelData(function(){
 		ch = _.filter(ch, function(channel) {
-			let cur_date = moment(Date.now()).format("YYYY-MM-DD");
-		//	if cur_date.slice(0, 4) == channel.date_created.slice(0,4) && {
-
-		//	}
-
-			//if (channel.date_created )			
+			let one_day = 24 * 60 * 60 * 1000;
+			let cur_date = new Date(Date.now());
+			let channel_date = new Date(channel.date_created);
+			let days_diff = Math.round(Math.abs((cur_date.getTime() - channel_date.getTime())/(one_day)));
+			
+			if (days_diff < 7) return true   //last two weeks
+			else return false		
 		});		
-		res.render('recent', {
+		
+		ch = _.sortBy(ch, function(a, b) {
+			let a_date = new Date(a.date_created);
+			let b_date = new Date(b.date_created);
+			return a_date.getTime() - b_date.getTime();
+		});
 
+		ch = ch.reverse();
+		res.render('recentweek', {
 			channels: ch
 		});
 	});
+})
 
-//	res.render('recent');
+router.get('/filter/recentmonth', function(req, res) {
+	var ch = []
+
+	// Callback function to wait for channel data from DB before rendering page
+	function getChannelData(callback) {
+		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
+		Channel.find({}, function(err, channels) {
+			if (err) { throw err };
+			ch = channels;
+			callback();
+		});
+	}
+	
+	getChannelData(function(){
+		ch = _.filter(ch, function(channel) {
+			let one_day = 24 * 60 * 60 * 1000;
+			let cur_date = new Date(Date.now());
+			let channel_date = new Date(channel.date_created);
+			let days_diff = Math.round(Math.abs((cur_date.getTime() - channel_date.getTime())/(one_day)));
+			
+			if (days_diff <= 30) return true   //last two weeks
+			else return false		
+		});		
+
+		ch = _.sortBy(ch, function(a, b) {
+			let a_date = new Date(a.date_created);
+			let b_date = new Date(b.date_created);
+			return a_date.getTime() - b_date.getTime();
+		});
+
+		ch = ch.reverse();
+
+		res.render('recentmonth', {
+			channels: ch
+		});
+	});
 })
 
 //TODO

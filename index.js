@@ -199,12 +199,13 @@ app.get('/filter/recent', function(req, res) {
 	
 	getChannelData(function(){
 		ch = _.filter(ch, function(channel) {
-			let cur_date = moment(Date.now()).format("YYYY-MM-DD");
-		//	if cur_date.slice(0, 4) == channel.date_created.slice(0,4) && {
-
-		//	}
-
-			//if (channel.date_created )			
+			let one_day = 24 * 60 * 60 * 1000;
+			let cur_date = new Date(Date.now());
+			let channel_date = new Date(channel.date_created);
+			let days_diff = Math.round(Math.abs((cur_date.getTime() - channel_date.getTime())/(one_day)));
+			console.log("Cur date: " + cur_date);
+			console.log("Channel Date: " + channel_date);
+			console.log("Difference: " + days_difference);			
 		});		
 		res.render('recent', {
 
