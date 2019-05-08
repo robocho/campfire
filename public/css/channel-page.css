@@ -1,0 +1,54 @@
+h2 {
+        color: darkblue;
+    }
+    .body {
+        background-color: #FFFFFF;
+    }
+    .channel-header-inner {
+        margin: 0 auto;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        width: 85vw;
+        overflow: hidden;
+    }
+
+    #autoplay {
+        color: red;
+    }
+    .video-frame {
+        width: 580px;
+        margin: 0 auto;
+        text-align: center;
+        background-color: #362F49;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    #current-song {
+        padding-top: 10px;
+    }
+    .button-row {
+        width: 570px;
+        margin: 0 auto;
+        padding: 10px 5px;
+        overflow: hidden;
+    }
+    #prev {
+        float: left;
+        box-shadow: 0 1px 1px #33333D;
+        background-image: linear-gradient(to bottom, #464653, #3E3E49); 
+        padding: 0 1em;
+        border-radius: 0.125em;
+
+    }
+    #next {
+        float: right;
+        box-shadow: 0 1px 1px #33333D;
+        background-image: linear-gradient(to bottom, #464653, #3E3E49); 
+        padding: 0 1em;
+        border-radius: 0.125em;
+    }
+
+    #add-song-form {
+        margin: 0;
+        padding-bottom: 10px;
+    }

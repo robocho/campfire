@@ -1,55 +1,25 @@
-<style>
-    h2 {
-        color: darkblue;
-    }
-    .body {
-        background-color: blanchedalmond;
-    }
-    .channel-header-inner {
-        margin: 0 auto;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        width: 85vw;
-        overflow: hidden;
-    }
+<!DOCTYPE html>
+<html>
+<head>
+    <title>channel</title>
+     <link rel="stylesheet" type="text/css" href="/public/css/channel-page.css">
 
-    #autoplay {
-        color: red;
-    }
-    .video-frame {
-        width: 580px;
-        margin: 0 auto;
-        text-align: center;
-        background-color: tomato;
-    }
-    #current-song {
-        padding-top: 10px;
-    }
-    .button-row {
-        width: 570px;
-        margin: 0 auto;
-        padding: 10px 5px;
-        overflow: hidden;
-    }
-    #prev {
-        float: left;
-    }
-    #next {
-        float: right;
-    }
-
-    #add-song-form {
-        margin: 0;
-        padding-bottom: 10px;
-    }
-</style>
-
-<div class="body">
+    <link rel="icon" type="image/png" href="/public/table/images/icons/favicon.ico"/>
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/animate/animate.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/select2/select2.min.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/vendor/perfect-scrollbar/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/css/util.css">
+    <link rel="stylesheet" type="text/css" href="/public/table/css/main.css">
+</head>
+<body>
+    <div class="body">
     <div class="channel-header-inner">
-        {{#each channel}}
-            <h2 id="channel-name">{{this.name}} channel</h2>
-            <p>Genre: {{this.genre}}, Date created: {{this.date_created}}</p>
-        {{/each}}
+        
+            <h2 id="channel-name">{{channel.name}} channel</h2>
+            <p>Genre: {{channel.genre}}, Date created: {{channel.date_created}}</p>
+    
     </div>
     <div>
         <div class="video-frame">
@@ -63,14 +33,12 @@
             </div>
         </div>
         <div class="info-container">
-            {{#each channel}}
                 <h2>Playlist</h2>
                 <ol id="url-list">
-                {{#each this.queue as |song_url|}}
+                {{#each channel.queue as |song_url|}}
                     <li id='{{song_url}}'>{{song_url}}</li>
                 {{/each}}
                 </ol>
-            {{/each}}
         </div>
         <div class="info-container">
             <form id="add-song-form" method="POST" action="">
@@ -84,87 +52,22 @@
         </div>
     </div>
 </div>
-<script>
-    var urls = [];
-    var channelName = '';
-    var currentSongIndex = 0;
-    var autoPlay = false;
+<script src="/public/js/channel-page.js"></script>
+<script type="text/javascript">
 
-    var socket = io();
-
-    $(document).ready(function(){
-        // set [urls] equal to every song url in the queue
-        $('#url-list li').each(function(){
-            urls.push($(this).attr('id'));
-            console.log($(this).attr('id'));
-        });
-        // set channelName
-        channelName = $('#channel-name').text().split(" ")[0];
-        socket.emit('new listener', channelName);
-        // set the iframe video to play the current song
-        $('#current-song').attr('src', urls[currentSongIndex]);
-
-        $('#add-song-form').attr('action', '/channel/'+channelName);
-        $('.info-container').hide();
-        console.log(urls);
-    });
-
-
-    //when user leaves a channel
-    window.onbeforeunload = function (e) {
-        socket.emit('disconnected user', channelName)
+    window.onload = function() {
+        console.log("window loaded")
+        socket.emit('new listener', "{{channel._id}}")
+     //when user leaves a channel
     }
-    // next button ~ switch to next song
-    $('#next').on('click', function(){
-        currentSongIndex += 1;
-        if (currentSongIndex >= urls.length) {
-            currentSongIndex = 0;
-        }
-
-        var nextURLToPlay = urls[currentSongIndex];
-        if (autoPlay) {
-            nextURLToPlay += "?autoplay=1";
-        }
-        $('#current-song').attr('src', nextURLToPlay);
-    });
-
-    // prev button ~ switch to previous song
-    $('#prev').on('click', function(){
-        currentSongIndex -= 1;
-        if (currentSongIndex < 0) {
-            currentSongIndex = urls.length - 1;
-        }
-
-        var nextURLToPlay = urls[currentSongIndex];
-        if (autoPlay) {
-            nextURLToPlay += "?autoplay=1";
-        }
-        $('#current-song').attr('src', nextURLToPlay);
-    });
-
-    // playlist button ~ display playlist (queue) for channel
-    // ** Fix this to make it display right of the video? **
-    // ** Make this display the playlist or the add song box depending on which button is pressed **
-    $('#playlist').on('click', function(){
-        if ($('.info-container').is(':hidden')) {
-            $('.info-container').show();
-            $(window).scrollTop($('.info-container').offset().top);
-            {{!-- $('.video-frame').css('margin-left', '5%') --}}
-        } else {
-            $('.info-container').hide();
-            {{!-- $('.video-frame').css('margin-left', 'auto') --}}
-        }
-    });
-
-    $('#autoplay').on('click', function(){
-        if (autoPlay) {
-            autoPlay = false;
-            $(this).html('Autoplay: OFF');
-            $(this).css('color', 'red');
-        } else {
-            autoPlay = true;
-            $(this).html('Autoplay: ON');
-            $(this).css('color', 'green');
-        }
-    });
+    window.onbeforeunload = function (e) {
+        console.log("window unloaded")
+        socket.emit('disconnected user', "{{channel._id}}")
+        return null;
+    }
 </script>
+</body>
+</html>
+
+
+
