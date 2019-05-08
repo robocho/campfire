@@ -53,32 +53,31 @@ app.get('/',function(req,res){
 		});
 	}
 
-	app.post('/', function(req, res){
-		var body = req.body;
-		var videoURL = req.body.song;
-		
-		// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-		if (videoURL != '') {
-			var param = videoURL.split('v=')[1];
-			videoURL = "https://www.youtube.com/embed/" + param;
-		}
-
-		var new_channel = new Channel({
-			name: body.name,
-			genre: body.genre,
-			date_created: Date.now(),
-			queue: [videoURL],
-			current_song: videoURL
-		});
-		new_channel.save(function err(){
-			if(err) { console.log("ERROR") }
-		});
-		res.redirect('/show');
-	});
+app.post('/', function(req, res){
+	var body = req.body;
+	var videoURL = req.body.song;
 	
-	getChannelData(function(){
-		res.render('home', {channels: ch});
+	// check if the videoURL exists, then extract the video paramter and construct an embeded video link
+	if (videoURL != '') {
+		var param = videoURL.split('v=')[1];
+		videoURL = "https://www.youtube.com/embed/" + param;
+	}
+	var new_channel = new Channel({
+		name: body.name,
+		genre: body.genre,
+		date_created: Date.now(),
+		queue: [videoURL],
+		current_song: videoURL
 	});
+	new_channel.save(function err(){
+		if(err) { console.log("ERROR") }
+	});
+	res.redirect('/show');
+});
+	
+getChannelData(function(){
+	res.render('home', {channels: ch});
+});
 });
 app.get('/create', function(req, res) {
 	res.render('create')
@@ -129,9 +128,9 @@ app.post('/channel/:name', function(req, res){
 	}
 });
 
-	getChannelData(function(){
-		res.render('channel-page', {channel: ch, current_song: chCurrentSong});
-	});
+getChannelData(function(){
+	res.render('channel-page', {channel: ch, current_song: chCurrentSong});
+});
 });
 
 app.get('/show', function(req, res){

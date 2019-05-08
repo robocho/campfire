@@ -8,7 +8,8 @@ var ChannelSchema = new Schema(
     genre: {type: String, required: true, max: 100},
     date_created: {type: Date},
     queue: {type: Array, "default" : [], required: true}, 
-    current_song: {type: String}
+    current_song: {type: String},
+    active: {type: Number}
   }
 );
 

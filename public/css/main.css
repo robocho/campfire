@@ -1,6 +1,8 @@
-	body {
+	body,html {
 		margin: 0;
 		color: black;
+height: 100%;
+	font-family: sans-serif;
 	}
 
 	#title {

@@ -26,3 +26,8 @@
 #search-element:focus {
   border-color: #36304A;
 }
+
+#active {
+	margin-left: 25px;
+}
+
