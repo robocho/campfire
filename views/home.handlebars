@@ -42,7 +42,7 @@
                         </thead>
                         <tbody>
                             {{#each channels}}
-                                <tr onclick="location.href='/channel/{{this._id}}';">
+                                <tr class="entry" id='{{this.name}}' onclick="location.href='/channel/{{this._id}}';">
                                     <td class = "column1">{{this.name}} </td>
                                     <td class = "column2">{{this.date_created}}</td>
                                     <td class = "column3">{{this.genre}}</td>
