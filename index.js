@@ -4,7 +4,8 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose')
 var exphbs = require('express-handlebars');
-var _ = require("underscore");
+var _ = require('underscore');
+var moment = require('moment');
 var Channel = require('./models/channels');
 require('dotenv').config()
 const port = 3000;
@@ -52,34 +53,39 @@ app.get('/',function(req,res){
 			callback();
 		});
 	}
-
-	app.post('/', function(req, res){
-		var body = req.body;
-		var videoURL = req.body.song;
-		
-		// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-		if (videoURL != '') {
-			var param = videoURL.split('v=')[1];
-			videoURL = "https://www.youtube.com/embed/" + param;
-		}
-
-		var new_channel = new Channel({
-			name: body.name,
-			genre: body.genre,
-			date_created: Date.now(),
-			queue: [videoURL],
-			current_song: videoURL
-		});
-		new_channel.save(function err(){
-			if(err) { console.log("ERROR") }
-		});
-		res.redirect('/show');
-	});
 	
 	getChannelData(function(){
 		res.render('home', {channels: ch});
 	});
 });
+
+app.post('/', function(req, res){
+	var body = req.body;
+	var videoURL = req.body.song;
+
+// check if the videoURL exists, then extract the video paramter and construct an embeded video link
+	if (videoURL != '') {
+		var param = videoURL.split('v=')[1];
+		videoURL = "https://www.youtube.com/embed/" + param;
+	}
+
+	    //let cur_date = moment().format("MMMM Do YYYY");
+	   // console.log(cur_date);
+	var new_channel = new Channel({
+		name: body.name,
+		genre: body.genre,
+		date_created: Date.now(),
+  	    //date_created: cur_date,
+		queue: [videoURL],
+		current_song: videoURL
+	});
+	new_channel.save(function err(){
+		//if(err) { console.log("ERROR") }
+	});
+	res.redirect('/show');
+});
+
+
 app.get('/create', function(req, res) {
 	res.render('create')
 })
@@ -148,10 +154,26 @@ app.get('/filter', function(req, res) {
 
 //TODO
 app.get('/filter/recent', function(req, res) {
+	var ch = []
 
-	Channel.find({}, function(err, channels) {
-		if (err) { throw err };
-		res.render('show', {ch: JSON.stringify(channels, null, 2)});
+	// Callback function to wait for channel data from DB before rendering page
+	function getChannelData(callback) {
+		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
+		Channel.find({}, function(err, channels) {
+			if (err) { throw err };
+			ch = channels;
+			callback();
+		});
+	}
+	
+	getChannelData(function(){
+		ch = _.filter(ch, function(channel) {
+			//if (channel.date_created )			
+		});		
+		res.render('recent', {
+
+			channels: ch
+		});
 	});
 
 //	res.render('recent');
@@ -171,31 +193,8 @@ app.get('/filter/popular', function(req, res) {
 		});
 	}
 
-	app.post('/', function(req, res){
-		var body = req.body;
-		var videoURL = req.body.song;
-		
-		// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-		if (videoURL != '') {
-			var param = videoURL.split('v=')[1];
-			videoURL = "https://www.youtube.com/embed/" + param;
-		}
-
-		var new_channel = new Channel({
-			name: body.name,
-			genre: body.genre,
-			date_created: Date.now(),
-			queue: [videoURL],
-			current_song: videoURL
-		});
-		new_channel.save(function err(){
-			if(err) { console.log("ERROR") }
-		});
-		res.redirect('/show');
-	});
-	
 	getChannelData(function(){
-		res.render('home', {channels: ch});
+		res.render('popular', {channels: ch});
 	});
 	//res.render('popular');
 })
