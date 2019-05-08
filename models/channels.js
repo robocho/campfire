@@ -6,6 +6,12 @@ var SongSchema = new Schema(
     mp3_link: {type: String, required: true},
   }
 );
+var CommentSchema = new Schema ({
+  name: {type: String, required: true, max: 100},
+  date_created: {type: Date},
+  comment: {type: String, required: true, max: 400},
+})
+
 
 var ChannelSchema = new Schema(
   {
@@ -18,11 +24,6 @@ var ChannelSchema = new Schema(
   }
 );
 
-var CommentSchema = new Schema ({
-  name: {type: String, required: true, max: 100},
-  date_created: {type: Date},
-  comment: {type: String, required: true, max: 400},
-})
 
 //Export model - compiles a model
 // instances of models are called documents
