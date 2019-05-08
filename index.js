@@ -69,13 +69,19 @@ app.post('/', function(req, res){
 		videoURL = "https://www.youtube.com/embed/" + param;
 	}
 
-	    //let cur_date = moment().format("MMMM Do YYYY");
-	   // console.log(cur_date);
+/*	let date = new Date(Date.now());
+	let cur_date = date.getDate();
+	let cur_month = date.getMonth();
+	let cur_year = date.getFullYear();
+	let dateStr = cur_date + "-" + (cur_month + 1) + "-" + cur_year; */
+
+//	cur_date = moment(cur_date).format("YYYY-MM-DD");
+
 	var new_channel = new Channel({
 		name: body.name,
 		genre: body.genre,
 		date_created: Date.now(),
-  	    //date_created: cur_date,
+  	    //date_created: dateStr,
 		queue: [videoURL],
 		current_song: videoURL
 	});
@@ -168,6 +174,11 @@ app.get('/filter/recent', function(req, res) {
 	
 	getChannelData(function(){
 		ch = _.filter(ch, function(channel) {
+			let cur_date = moment(Date.now()).format("YYYY-MM-DD");
+		//	if cur_date.slice(0, 4) == channel.date_created.slice(0,4) && {
+
+		//	}
+
 			//if (channel.date_created )			
 		});		
 		res.render('recent', {
