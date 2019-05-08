@@ -39,7 +39,7 @@ router.post('/', function(req, res){
 	new_channel.save(function err(){
 		if(err) { console.log("ERROR") }
 	});
-	res.redirect('/show');
+	res.redirect('/');
 });
 	
 getChannelData(function(){
