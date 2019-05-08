@@ -36,7 +36,7 @@
                 <h2>Playlist</h2>
                 <ol id="url-list">
                 {{#each channel.queue as |song_url|}}
-                    <li id='{{song_url}}'>{{song_url}}</li>
+                    <li id='{{song_url.mp3_link}}'>{{song_url.mp3_link}}</li>
                 {{/each}}
                 </ol>
         </div>
@@ -65,6 +65,23 @@
         socket.emit('disconnected user', "{{channel._id}}")
         return null;
     }
+
+    $(document).ready(function(){
+     // set [urls] equal to every song url in the queue
+     $('#url-list li').each(function(){
+         urls.push($(this).attr('id'));
+         console.log($(this).attr('id'));
+     });
+     // set channelName
+     channelName = $('#channel-name').text().split(" ")[0];
+     
+     // set the iframe video to play the current song
+     $('#current-song').attr('src', urls[currentSongIndex]);
+     $('#add-song-form').attr('action', '/channel/'+"{{channel._id}}");
+     $('.info-container').hide();
+    console.log(urls);
+    });
+
 </script>
 </body>
 </html>

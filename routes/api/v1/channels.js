@@ -28,10 +28,10 @@ channelsRouter.use('/:channelId', (req, res, next) => {
 
 channelsRouter.route('/')
   .get(channel_controller.retrieve_channels)  
-  .post(ticket_controller.create_channel);
+  .post(channel_controller.create_channel);
 
 
-ticketsRouter.route('/:channelId/delete')
-  .delete(ticket_controller.delete_channel)
+channelsRouter.route('/:channelId/delete')
+  .delete(channel_controller.delete_channel)
 
 module.exports = channelsRouter;
