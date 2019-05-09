@@ -38,14 +38,16 @@
                                 <th class="column1">Channel</th>
                                 <th class="column2">Date Created</th>
                                 <th class="column3">Genre</th>
+                                <th class = "column4">Active Listeners</th>
                             </tr>
                         </thead>
                         <tbody>
                             {{#each channels}}
                                 <tr onclick="location.href='/channel/{{this.name}}';">
                                     <td class = "column1">{{this.name}} </td>
-                                    <td class = "column2">{{this.date_created}}</td>
+                                    <td class = "column2">{{dateFormat this.date_created "dddd, MMMM Do YYYY"}}</td>
                                     <td class = "column3">{{this.genre}}</td>
+                                    <td class ="column4">{{this.active}}</td>
                                 </tr>
                             {{/each}}                 
                         </tbody>
