@@ -12,7 +12,7 @@ exports.channel_detail = function(req, res) {
       res.json(author)
       // when using middleware
       //res.json(req.author)
-    //}) 
+    }) 
 };
 
 //POST 

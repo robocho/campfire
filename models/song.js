@@ -4,9 +4,8 @@ var Schema = mongoose.Schema;
 
 var SongSchema = new Schema(
   {
-    title: {type: String, required: true},
+  	title: {type: String, required: true},
     mp3_link: {type: String, required: true},
-    artist: {type: String}
   }
 );
 

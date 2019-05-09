@@ -10,7 +10,7 @@ require('dotenv').config()
 const port = 3000;
 
 var indexRouter = require('./routes/index');
-
+var channelRouter = require('./routes/api/v1/channels')
 
 //setting up express & handlebars
 
@@ -27,6 +27,7 @@ app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/par
 app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
 app.use('/', indexRouter);
+app.use('/', channelRouter);
 
 
 

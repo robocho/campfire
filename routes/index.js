@@ -1,7 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var Channel = require('../models/channels');
+
 var _ = require('underscore');
+
+var Song = require('../models/song')
+
+var getYoutubeTitle = require('get-youtube-title')
+
 
 /* GET home page. */
 router.get('/',function(req,res){
@@ -22,22 +28,59 @@ router.post('/', function(req, res){
 	var videoURL = req.body.song;
 	
 	// check if the videoURL exists, then extract the video paramter and construct an embeded video link
-	if (videoURL != '') {
-		var param = videoURL.split('v=')[1];
-		videoURL = "https://www.youtube.com/embed/" + param;
+	async function getTitle() {
+		var title = "";
+		if (videoURL != '') {
+			var param = videoURL.split('v=')[1];
+			videoURL = "https://www.youtube.com/embed/" + param;
+		}
+
+		let promise = new Promise((resolve, reject) => {
+    		getYoutubeTitle(param, function (err, t) {
+  				resolve(t)
+			})
+  		});
+
+  		title = await promise;
+
+  		var new_song = new Song({title: title, mp3_link: videoURL});
+
+		var new_channel = new Channel({
+			name: body.name,
+			genre: body.genre,
+			date_created: Date.now(),
+			queue: [new_song],
+			current_song: videoURL,
+			active: 0,
+			comments: []
+		});
+		new_channel.save(function err(){
+			if(err) { console.log("ERROR") }
+		});
+
+
+		res.redirect('/channel/'+ new_channel._id);
 	}
+	
+	getTitle()
+
+	/*
+	var new_song = new Song({title: title, mp3_link: videoURL});
+
 	var new_channel = new Channel({
 		name: body.name,
 		genre: body.genre,
 		date_created: Date.now(),
-		queue: [videoURL],
+		queue: [new_song],
 		current_song: videoURL,
-		active: 0
+		active: 0,
+		comments: []
 	});
 	new_channel.save(function err(){
 		if(err) { console.log("ERROR") }
 	});
-	res.redirect('/show');
+	res.redirect('/');
+	*/
 });
 	
 getChannelData(function(){
@@ -63,25 +106,27 @@ router.get('/channel/:id', function(req,res){
 	}
 
 	// This post method adds a song to the channel's queue
-router.post('/channel/:name', function(req, res){
-	var channelName = req.params.name;
+router.post('/channel/:id', function(req, res){
+	var channelID = req.params.id;
 	var videoURL = req.body.song;
-	var goBack = '/channel/' + channelName;
+	var goBack = '/channel/' + channelID;
 	var channel = {};
 	if (videoURL != '') {
 		var param = videoURL.split('v=')[1];
 		videoURL = "https://www.youtube.com/embed/" + param;
 		function findChannel(callback) {
-			Channel.find({name: channelName}, function(err, ch){
+			Channel.find({_id: channelID}, function(err, ch){
 				if (err) { throw err; }
 				channel = ch[0];
 				callback();
 			})
 		}
+
+		var new_song = new Song({mp3_link: videoURL})
 		findChannel(function(){
 			Channel.update(				// use updateOne() because update() is deprecated?
-				{_id: channel._id},
-				{$push: {queue: videoURL} },
+				{_id: channelID},
+				{$push: {queue: new_song} },
 				function(err) {
 					if (err) { console.log("ERROR") }
 				}

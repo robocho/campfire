@@ -4,7 +4,7 @@
     var autoPlay = false;
 
     var socket = io();
-
+/*
     $(document).ready(function(){
         // set [urls] equal to every song url in the queue
         $('#url-list li').each(function(){
@@ -13,6 +13,8 @@
         });
         // set channelName
         channelName = $('#channel-name').text().split(" ")[0];
+
+
         // set the iframe video to play the current song
         $('#current-song').attr('src', urls[currentSongIndex]);
 
@@ -22,7 +24,7 @@
     });
 
 
-
+*/
     // next button ~ switch to next song
     $('#next').on('click', function(){
         currentSongIndex += 1;
