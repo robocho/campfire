@@ -29,34 +29,32 @@
     <h3 id = "recent">Recent</h3>
     <br>
     <input type="search" id='search-element' placeholder="Search for a channel">
-            <div class="wrap-table100">
-                <div class="table100">
-                    <table class = "fixed_header">
-                        <thead>
-                            <tr class="table100-head">
-                                <th class="column1">Channel</th>
-                                <th class="column2">Date Created</th>
-                                <th class="column3">Genre</th>
-                                <th class = "column4">Active Listeners</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {{#each channels}}
-                                <tr onclick="location.href='/channel/{{this._id}}';">
-                                    <td class = "column1">{{this.name}} </td>
-                                    <td class = "column2">{{this.date_created}}</td>
-                                    <td class = "column3">{{this.genre}}</td>
-                                    <td class ="column4">{{this.active}}</td>
-                                </tr>
-                            {{/each}}                 
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+    <div class="wrap-table100">
+    <div class="table100">
+    <table class = "fixed_header">
+    <thead>
+    <tr class="table100-head">
+        <th class="column1">Channel</th>
+        <th class="column2">Date Created</th>
+        <th class="column3">Genre</th>
+        <th class = "column4">Active Listeners</th>
+    </tr>
+    </thead>
+    <tbody>
+        {{#each channels}}
+        <tr onclick="location.href='/channel/{{this._id}}';">
+        <td class = "column1">{{this.name}} </td>
+        <td class = "column2">{{this.date_created}}</td>
+        <td class = "column3">{{this.genre}}</td>
+        <td class ="column4">{{this.active}}</td>
+        </tr>
+        {{/each}}                 
+    </tbody>
+    </table>
+    </div>
+    </div>
    
     <script src="/public/js/home.js"></script>
-
-
 
 </body>
 </html>
