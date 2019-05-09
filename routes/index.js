@@ -119,25 +119,8 @@ router.get('/filter/exactdate', function(req, res) {
 			callback();
 		});
 	}
-	
+
 	getChannelData(function(){
-		ch = _.filter(ch, function(channel) {
-			let one_day = 24 * 60 * 60 * 1000;
-			let cur_date = new Date(Date.now());
-			let channel_date = new Date(channel.date_created);
-			let days_diff = Math.round(Math.abs((cur_date.getTime() - channel_date.getTime())/(one_day)));
-			
-			if (days_diff < 7) return true   //last two weeks
-			else return false		
-		});		
-
-		ch = _.sortBy(ch, function(a, b) {
-			let a_date = new Date(a.date_created);
-			let b_date = new Date(b.date_created);
-			return a_date.getTime() - b_date.getTime();
-		});
-
-		ch = ch.reverse();
 		res.render('exactdate', {
 			channels: ch
 		});
