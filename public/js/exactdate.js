@@ -1,6 +1,6 @@
   console.log("Here");
 
-  $('#search-date').on('click', function(e){
+  $('#search-date').on('change', function(e){
       /*let date = new Date($('#search-date').val());
       let month = $('#search-date').getMonth() + 1;
       let day = $('#search-date').getDate();
