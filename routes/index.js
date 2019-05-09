@@ -53,7 +53,9 @@ router.post('/', function(req, res){
 		new_channel.save(function err(){
 			if(err) { console.log("ERROR") }
 		});
-		res.redirect('/');
+
+
+		res.redirect('/channel/'+ new_channel._id);
 	}
 	
 	getTitle()

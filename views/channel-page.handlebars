@@ -35,8 +35,13 @@
         <div class="info-container">
                 <h2>Playlist</h2>
                 <ol id="url-list">
-                {{#each channel.queue as |song_url|}}
-                    <li id='{{song_url.mp3_link}}'>{{song_url.mp3_link}}</li>
+                {{#each channel.queue as |song_obj|}}
+                    <li id='{{song_obj.mp3_link}}'>{{song_obj.mp3_link}}</li>
+                {{/each}}
+                </ol>
+                <ol id="name-list">
+                {{#each channel.queue as |song_obj|}}
+                    <li>{{song_obj.title}}</li>
                 {{/each}}
                 </ol>
         </div>
@@ -72,6 +77,8 @@
          urls.push($(this).attr('id'));
          console.log($(this).attr('id'));
      });
+     $('#url-list').hide();
+
      // set channelName
      channelName = $('#channel-name').text().split(" ")[0];
      
