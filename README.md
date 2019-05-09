@@ -96,34 +96,3 @@ var options = {
 get-youtube-title
 get-youtube-id
 
-### 3. View Data
-
-GET endpoint route:  
-`/api/all` -> Returns all lost and found entries  
-`/api/category/:category` -> Returns all lost and found entries under specified category  
-`/api/date/:year/:month/:day` -> Returns all lost and found entries under specified date: Eg: (2019/12/20)  
-`/api/date/:year/:month` -> Returns all lost and found entries under specified year and month: Eg: (2019/05)  
-`/api/date/:year` -> Returns all lost and found entries under specified year: Eg: (2019)  
-
-### 4. Search Data
-
-Search Field: Title **or** Description
-
-Searching data will filter out entries displaying entries with a "title" or "description" containing search value
-
-### 5. Navigation Pages
-
-Navigation Filters
-1. Category Drop Down Menu -> `/category/:category`
-    - All -> `/category/all`
-    - Clothing -> `/category/clothing`
-    - Headphones -> `/category/headphones`
-    - Phone -> `/category/phone`
-    - ID -> `/category/id`
-    - Keys -> `/category/keys`
-    - Wallet -> `/category/wallet`
-    - Other Electronic -> `/category/other%20electronic`
-    - Other -> `/category/other`
-2. Date -> `/Date/:year/:month/:day  `
-3. Most Recent -> `  /mostrecent`
-4. Oldest -> `/oldest`

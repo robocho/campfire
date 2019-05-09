@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var logger = require('morgan');
 var mongoose = require('mongoose')
 var exphbs = require('express-handlebars');
+const Handlebars = require('handlebars');
 var _ = require("underscore");
 var Channel = require('./models/channels');
 require('dotenv').config()
@@ -30,6 +31,8 @@ app.use('/', indexRouter);
 app.use('/', channelRouter);
 
 
+
+Handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 //setting up mongoose connection
 
