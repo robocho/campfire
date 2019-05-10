@@ -1,44 +1,6 @@
 <!DOCTYPE html>
-
-<!--<html> 
-<head>
-	<style type="text/css">
-        * {
-            margin: 0;
-            padding: 0;
-        }
-		.image-box {
-			display: grid;
-			height: 100%;
-			width: 100%;
-  		    overflow-x: hidden; 
-
-		}
-		#top-image {
-			max-width: 100%;
-			width:100%;
-			height: 100%;
-			margin: auto;
-
-		}
-	</style>
-</head>
-
-<body>
-	<div class="image-box">
-		<img src="../public/assets/campfire-cooking.jpg" alt="campfire" id="top-image" >
-	</div>
-
-	<h2>About Us:</h2>
-
-	<h3> Robert Choe</h3>
-	<h3> Sandro Brognara </h3>
-	<h3> TJ Shrestha </h3>
-
-</body>
-</html> -->
-
 <html>
+
 <head class='ignore-css'>
 <style  type="text/css">
         * {
@@ -62,6 +24,54 @@
 		.ignore-css {
 			all:unset;
 		}
+
+		.pic {
+			max-width:100%;
+			max-height:100%;
+			object-fit: contain;
+		}
+
+/* DivTable.com */
+.divTable{
+	display: table;
+	width: 100%;
+}
+.divTableRow {
+	display: table-row;
+}
+.divTableHeading {
+	/*background-color: #EEE;*/
+	display: table-header-group;
+}
+.divTableCell, .divTableHead {
+	/*border: 1px solid #999999;*/
+	display: table-cell;
+	padding-left: 0px 0px;
+}
+.divTableHeading {
+	/*background-color: #EEE;*/
+	display: table-header-group;
+	font-weight: bold;
+}
+.divTableFoot {
+	/*background-color: #EEE;*/
+	display: table-footer-group;
+	font-weight: bold;
+}
+.divTableBody {
+	display: table-row-group;
+}
+
+.center-title {
+	font-weight:600;
+}
+.center-stmt {
+	font-weight:500;
+}
+
+.stmt {
+	font-size:large;
+}
 	
 	</style>
   <title>About</title>
@@ -74,90 +84,86 @@
 </div>
 <hr width="100%">
 
-<h2><b>About Us:</b></h2>
+<h1 class="center-title"><center>Our Mission</center></h1>
 <hr width="100%">
 
 
-<!--	<div class='ignore-css' class="image-box">
-		<img src="../public/assets/campfire-cooking.jpg" alt="campfire" id="top-image">
-	</div>
+<h2 class="center-stmt"> <center>Campfire is a Social Playlist web app with the goal of uniting the world through the beauty of music.</center> </h2>
 
-	<table class="ignore-css" style="width: 95%;" cellspacing="20" cols="5">
-  	<tbody class="ignore-css">
-    <tr class='ignore-css'>
-    <td class='ignore-css' style="text-align: left; height: 250px;" width="500">
-    <h2 class='ignore-css' style="margin-left: 30px;" align="left">Peter Kemper </h2>
-    <h4 class='ignore-css' style="margin-left: 30px;"> Senior <br> 
-	Department of Computer Science 
-	<br>
-	College of William and Mary 
-	<br>
-	P.O. Box 8795
-	<br>
-	Williamsburg, VA 23187-8795 
-	<br>
-    <br>
-    </h4>
+<br>
+<blockquote class="stmt"> Users can create channels and have others can tune in and contribute to the channel's playlist queue.</blockquote>
 
-     <div class='ignore-css' style="margin-left: 30px;"> McGlothlin-Street Hall, 		#104A 
-      		<br>
-			Phone: 757-221-3462 
-			<br>
-			Fax: 757-221-1717 
-			<br>
-			Email: kemper at cs.wm.edu 
-			<br>
-      	<br>
-      	</div>
-      	</td>
-      	<td class='ignore-css' style="text-align: right;" height="50%"> <img src="../public/robert-choe.jpeg" width="200"> 
-      	<br>
-      	</td>
-    	</tr>
-  	</tbody>
-	</table> -->
-
-<blockquote> Campfire is a ...</blockquote>
 <hr width="100%">
 
-<div>
-<img src="../public/assets/robert-choe.jpeg" align='right'>
-<br>
-<h4>Robert Choe:</h4>
-<br>
-<blockquote>
-Modeling, Techniques and Tools for Simulation and Optimization of
-Discrete Event Systems, Stochastic Models for Performance and Dependability
-Analysis, Human-Computer Interfaces, Brain-Computer Interfaces, Software Development, Analysis Techniques for Spatial-Temporal Data
-</blockquote>
-</div>
-<hr width="100%">
 
-<div>
-<img src="../public/assets/sandro-brognara.jpg" align='right'>
-<br>
-<h4>Sandro Brognara: </h4>
-<br>
-<blockquote>
-Modeling, Techniques and Tools for Simulation and Optimization of
-Discrete Event Systems, Stochastic Models for Performance and Dependability
-Analysis, Human-Computer Interfaces, Brain-Computer Interfaces, Software Development, Analysis Techniques for Spatial-Temporal Data
-</blockquote>
-<hr width="100%">
+<div class='ignore-css' class="image-box">
+	<img src="../public/assets/sunset.jpg" alt="campfire" id="top-image">
 </div>
 
-<div>
-<img src="../public/assets/tj.jpg" align='right'>
+<hr width="100%">
+
+<h1 class="center-title"><center>Meet Our Developers</center></h1>
+<hr width="100%">
+
+
+<div class="divTable">
+<div class="divTableBody">
+
+<div class="divTableRow">
+<div class="divTableCell">&nbsp;
+<h3>Robert Choe</h3>
 <br>
-<h4>TJ Shrestha: </h4>
+<blockquote class='stmt'>
+Robert is a junior Computer Science major at the University of Maryland, College Park. His research interests include Robotics, Machine Learning and Computer Graphics. On his spare time, Robert likes to paint and play baseball. He lives in 
+</blockquote> 
+</div>
+<div class="divTableCell">&nbsp; 
+<img class="pic" src="../public/assets/robert-choe.jpeg" align='right'>
+</div>
+</div>
+
+<hr width="100%">
+
+<div class="divTableRow">
+<div class="divTableCell">&nbsp;
+<h3>Sandro Brognara </h3>
 <br>
-<blockquote>
-Modeling, Techniques and Tools for Simulation and Optimization of
-Discrete Event Systems, Stochastic Models for Performance and Dependability
-Analysis, Human-Computer Interfaces, Brain-Computer Interfaces, Software Development, Analysis Techniques for Spatial-Temporal Data
+<blockquote class='stmt'>
+	Sandro is a senior Computer Science major at the University of Maryland, College Park. His research interests include Cryptography, Computer Security and Performance Analysis. On his spare time, Sandro likes to play guitar and football.
 </blockquote>
 </div>
+<div class="divTableCell">&nbsp;
+
+<img class="pic" src="../public/assets/sandro-brognara.jpg" align='right'>
+
+</div>
+</div>
+
 <hr width="100%">
+
+<div class="divTableRow">
+<div class="divTableCell">&nbsp;
+<h3>TJ Shrestha</h3>
+<br>
+<blockquote class='stmt'>
+TJ is a junior Computer Science major at the University of Maryland, College Park. TJ's research interests include Computational Biology, Human-Computer Interface and Computer Vision. On his spare time, TJ likes to swim and play soccer.
+</blockquote>
+</div>
+<div class="divTableCell">&nbsp;
+<img class="pic" src="../public/assets/tj.jpg" align='right'>
+
+</div>
+</div>
+
+</div>
+</div>
+
+<hr width="100%">
+
+<div class='ignore-css' class="image-box">
+	<img src="../public/assets/campfire3.jpg" alt="campfire" id="top-image">
+</div>
+
 
 </body>
 </html>
