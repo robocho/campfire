@@ -2,10 +2,10 @@
   "name": "campfire",
   "version": "1.0.0",
   "description": "A Social Playlist Web Application where users create channels and others can tune in and contribute to the playlist queue.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "main": "app.js"
+     "start": "node app.js",
   },
   "repository": {
     "type": "git",
