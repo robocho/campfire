@@ -27,8 +27,9 @@ app.use(bodyParser.urlencoded({ extended: true}));
 app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/partials/"}));
 app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
+
 app.use('/', indexRouter);
-app.use('/', channelRouter);
+app.use('/api/v1/channels', channelRouter);
 
 
 
