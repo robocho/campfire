@@ -43,7 +43,7 @@ const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-ipths.mongodb.net/test?r
 mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
-	process.exit(1);
+	
 })
 
 http.listen(process.env.PORT || 3000, function() {
