@@ -1,0 +1,33 @@
+#browse {
+	margin-left: 25px;
+	padding-top: 25px;
+}
+
+#browse-divider {
+		border-style: solid;
+		border-width: 1px;
+		margin-left: 25px;
+		margin-right: 25px;
+		border-color: #c9c9c9;
+}
+#recent {
+	padding-top: 20px;
+	margin-left: 25px;
+}
+#search-element {
+	margin-left: 25px;
+	outline: none;
+	border: none;
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	margin-bottom: 3px;
+	border-color: #c9c9c9;
+}
+#search-element:focus {
+  border-color: #36304A;
+}
+
+#active {
+	margin-left: 25px;
+}
+
