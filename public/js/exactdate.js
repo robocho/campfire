@@ -1,21 +1,11 @@
-  console.log("Here");
-
   $('#search-date').on('change', function(e){
-      /*let date = new Date($('#search-date').val());
-      let month = $('#search-date').getMonth() + 1;
-      let day = $('#search-date').getDate();
-      let year = $('#search-date').getFullYear();
-      console.log(day+"/"+month+"/"+year);*/
       let date = $('#search-date').val();
       let month = date.slice(5,7);
       let day = date.slice(8, 10);
       let year = date.slice(0, 4);
-      console.log("date: " + date);
-      console.log("month: " + month + "/ day: " + day + "/ year: " + year);
-
-    //  let months_arr = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      let months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-      //var filter = input.toUpperCase();
+      
+      let months_short = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    //  let months_short = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
       if (month != null && date != null && year != null) {           //if not null for any val
         var table, tr, td, i, dateValue;
 
@@ -29,24 +19,24 @@
               let date_string = dateValue.split(" ");
 
               let cur_month = date_string[1];
-              let cur_day = date_string[2];
               let cur_year = date_string[3];
+              let cur_day = "";
 
-
-              console.log(date_string);
+              let cur_day_arr = date_string[2].split('');
+              if (cur_day_arr.length == 3) {
+                cur_day = "0" + cur_day_arr[0];
+              }
+              else {
+                cur_day = cur_day_arr.slice(0, 2);
+              }
 
               cur_month = months_short.indexOf(cur_month) + 1;
-
-
-         //     cur_month = moment().month(cur_month);
-              console.log("cur month: " + cur_month + "/ cur day: " + cur_day + "/cur year: " + cur_year);
-
+              
               if (month == cur_month && day == cur_day && year == cur_year) {
+
                 tr[i].style.display = "";
               } 
               else {
-                console.log("Not here");
-                console.log("cur month: " + cur_month);
                 tr[i].style.display = "none";
               }
             }       
