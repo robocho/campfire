@@ -14,61 +14,94 @@
     <link rel="stylesheet" type="text/css" href="/public/table/css/main.css">
 </head>
 <body>
-    <div class="body">
+<div class="main">
     <div class="channel-header-inner">
-        
-            <h2 id="channel-name">{{channel.name}}</h2>
-            <p>Genre: {{channel.genre}}</p>
-            <p>Date created: {{dateFormat channel.date_created "dddd, MMMM Do YYYY"}}</p>
     
+        <h2 id="channel-name">{{channel.name}}</h2>
+        <p>Genre: {{channel.genre}}</p>
+        <p>Date created: {{dateFormat channel.date_created "dddd, MMMM Do YYYY"}}</p>
+
     </div>
-    <div>
 
-        <ul id="horizontal">
-            <li>        <div class="video-frame">
+    <ul id="horizontal">
+        <li>        
+            <div class="video-frame">
             <iframe id="current-song" width="560" height="315" src='' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <div class="button-row">
-                <button id="prev">Prev</button>
-                <button id="next">Next</button>
-                <button id="autoplay">Autoplay: OFF</button>
+                <div class="button-row">
+                    <button id="prev">Prev</button>
+                    <button id="next">Next</button>
+                    <button id="autoplay">Autoplay: OFF</button>
+                </div>
             </div>
-        </div></li>
-           <li>
+        </li>
+        <li>
         <div class="info-container">
-                                    <div class="info-container">
-                            <form id="add-song-form" method="POST" action="">
-                                <fieldset>
-                                <legend><h2>Add a song</h2></legend>
-                                <input type='text' name='song'><br>
-                                <br>
-                                <input type='submit' value='Add'><br>
-                                </fieldset>
-                             </form>
-                        </div>
-                <h2>Playlist</h2>
-                <ol id="url-list">
+            <div class="add-song-container">
+                <h2 style="float: left;">Playlist</h2>
+                <form id="add-song-form" method="POST" action="" style="float: right;">
+                    <input type='text' name='song' placeholder="Add a song">
+                    <input type='submit' value='Add'>
+                </form>
+            </div>
+
+            {{!-- Ignore this block it's not supposed to be visible --}}
+            <ol id="url-list">
+            {{#each channel.queue as |song_obj|}}
+                <li id='{{song_obj.mp3_link}}'>{{song_obj.mp3_link}}</li>
+            {{/each}}
+            </ol>
+            {{!-- ################################################## --}}
+
+            <table style="width:100%">
                 {{#each channel.queue as |song_obj|}}
-                    <li id='{{song_obj.mp3_link}}'>{{song_obj.mp3_link}}</li>
+                <tr>
+                    <td> {{song_obj.title}} </td>
+                </tr>
                 {{/each}}
-                </ol>
-                <table style="width:100%">
-
-   {{#each channel.queue as |song_obj|}}
-   <tr>
-        <td> {{song_obj.title}} </td>
-    </tr>
-   {{/each}}
-</table>
+            </table>
         </div>
+        </li>
+    </ul>
+</div>
+<hr class="separator">
+<div class="comments-header">
+    <h2>Comments</h2>
+</div>
+<div class="comments-container">
+    {{#each channel.comments as |c|}}
+    <hr class="comment-separator">
+    <div class="outer-comment-container">
+        <div class="comment">
+            <div class="name-section">
+                <b style="font-size: 125%;">{{c.name}}</b>
+            </div>
+            <div class="date-section">
+                <p>{{dateFormat c.date_created "dddd, MMMM Do YYYY"}}</p>
+                <p>{{dateFormat c.date_created "hh:mm a"}}</p>
+            </div>
+        </div>
+        <div class="text">
+            <p>{{c.comment}}</p>
+        </div>
+    </div>
+    {{/each}}
 
-           </li>
-
-
-        </ul>
-
+    <hr class="comment-separator">
+    <div class="add-container">
+        <form id="add-comment-form" method="POST" action="">
+            <textarea name="comment" placeholder="Add a comment..." cols="60" rows="10"></textarea>
+            <br>
+            <input type='text' name='name' placeholder="Enter your name (optional)" size="40">
+            <input type='submit' value='Add Comment'>
+        </form>
+    </div>
+</div>
+{{!-- 
     </div>
         
-</div>
+</div> --}}
+</body>
+
 <script src="/public/js/channel-page.js"></script>
 <script type="text/javascript">
 
@@ -97,12 +130,12 @@
      // set the iframe video to play the current song
      $('#current-song').attr('src', urls[currentSongIndex]);
      $('#add-song-form').attr('action', '/channel/'+"{{channel._id}}");
+     $('#add-comment-form').attr('action', '/channel/comment/'+"{{channel._id}}");
      //$('.info-container').hide();
     console.log(urls);
     });
 
 </script>
-</body>
 </html>
 
 

@@ -5,6 +5,7 @@ var Channel = require('../models/channels');
 var _ = require('underscore');
 
 var Song = require('../models/song')
+var Comment = require('../models/comment')
 
 var getYoutubeTitle = require('get-youtube-title')
 
@@ -85,7 +86,7 @@ router.post('/', function(req, res){
 	
 getChannelData(function(){
 	res.render('home', {channels: ch});
-});
+	});
 });
 router.get('/create', function(req, res) {
 	res.render('create')
@@ -148,14 +149,58 @@ router.post('/channel/:id', function(req, res){
 	}
 
 	getTitle()
-}); 
-
-		
+});
 		
 		
 getChannelData(function(){
 	res.render('channel-page', {channel: ch, current_song: chCurrentSong});
+	});
 });
+
+router.post('/channel/comment/:id', function(req, res){
+	var channelID = req.params.id;
+	var name = req.body.name;
+	var comment = req.body.comment;
+	var goBack = '/channel/' + channelID;
+	let today = new Date(Date.now());
+	var channel = {};
+
+	if (name === '') {
+		name = 'Anonymous';
+	}
+
+	if (comment != '') {
+		function findChannel(callback) {
+			Channel.find({_id: channelID}, function(err, ch){
+				if (err) { throw err; }
+				channel = ch[0];
+				callback();
+			})
+		}
+
+		findChannel(function(){
+
+			var newComment = new Comment({
+				name: name,
+				date_created: today,
+				comment: comment,
+				channelID: channelID
+			});
+
+			Channel.update(				// use updateOne() because update() is deprecated?
+				{_id: channelID},
+				{$push: {comments: newComment} },
+				function(err) {
+					if (err) { console.log("ERROR") }
+				}
+			);
+			res.redirect(goBack);
+		});
+
+	} else {
+		res.redirect(goBack);
+	}
+
 });
 
 router.get('/show', function(req, res){
