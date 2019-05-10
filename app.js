@@ -45,7 +45,7 @@ mongoose.connection.on('error', function() {
 	process.exit(1);
 })
 
-http.listen(3000, function() {
+http.listen(process.env.PORT || 3000, function() {
     console.log('app listening on port 3000!');
 });
 
