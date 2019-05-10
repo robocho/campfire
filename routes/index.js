@@ -111,9 +111,11 @@ router.post('/channel/:id', function(req, res){
 	var videoURL = req.body.song;
 	var goBack = '/channel/' + channelID;
 	var channel = {};
-	if (videoURL != '') {
-		var param = videoURL.split('v=')[1];
-		videoURL = "https://www.youtube.com/embed/" + param;
+	async function getTitle() {
+		
+		if (videoURL != '') {
+			var param = videoURL.split('v=')[1];
+			videoURL = "https://www.youtube.com/embed/" + param;
 		function findChannel(callback) {
 			Channel.find({_id: channelID}, function(err, ch){
 				if (err) { throw err; }
@@ -121,23 +123,36 @@ router.post('/channel/:id', function(req, res){
 				callback();
 			})
 		}
+			let promise = new Promise((resolve, reject) => {
+			getYoutubeTitle(param, function (err, t) {
+					resolve(t)
+				})
+			});
 
-		var new_song = new Song({mp3_link: videoURL})
-		findChannel(function(){
-			Channel.update(				// use updateOne() because update() is deprecated?
-				{_id: channelID},
-				{$push: {queue: new_song} },
-				function(err) {
-					if (err) { console.log("ERROR") }
-				}
-			);
-			res.redirect(goBack); 		// Add an acknowledgement that the song was added successfully
-		});
-	} else {
-		res.redirect(goBack); 		// Display error to user saying why song url was invlaid
+
+		var title = await promise;
+			var new_song = new Song({title: title, mp3_link: videoURL});
+			findChannel(function(){
+				Channel.update(				// use updateOne() because update() is deprecated?
+					{_id: channelID},
+					{$push: {queue: new_song} },
+					function(err) {
+						if (err) { console.log("ERROR") }
+					}
+				);
+				res.redirect(goBack); 		// Add an acknowledgement that the song was added successfully
+			});
+		} else {
+			res.redirect(goBack); 	
+		}
 	}
-});
 
+	getTitle()
+}); 
+
+		
+		
+		
 getChannelData(function(){
 	res.render('channel-page', {channel: ch, current_song: chCurrentSong});
 });

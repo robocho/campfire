@@ -17,12 +17,15 @@
     <div class="body">
     <div class="channel-header-inner">
         
-            <h2 id="channel-name">{{channel.name}} channel</h2>
-            <p>Genre: {{channel.genre}}, Date created: {{channel.date_created}}</p>
+            <h2 id="channel-name">{{channel.name}}</h2>
+            <p>Genre: {{channel.genre}}</p>
+            <p>Date created: {{dateFormat channel.date_created "dddd, MMMM Do YYYY"}}</p>
     
     </div>
     <div>
-        <div class="video-frame">
+
+        <ul id="horizontal">
+            <li>        <div class="video-frame">
             <iframe id="current-song" width="560" height="315" src='' frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             <div class="button-row">
                 <button id="prev">Prev</button>
@@ -31,31 +34,42 @@
                 <button id="playlist">Playlist</button>
                 <button id="add-song">+</button>
             </div>
-        </div>
+        </div></li>
+           <li>
         <div class="info-container">
+                                    <div class="info-container">
+                            <form id="add-song-form" method="POST" action="">
+                                <fieldset>
+                                <legend><h2>Add a song</h2></legend>
+                                <input type='text' name='song'><br>
+                                <br>
+                                <input type='submit' value='Add'><br>
+                                </fieldset>
+                             </form>
+                        </div>
                 <h2>Playlist</h2>
                 <ol id="url-list">
                 {{#each channel.queue as |song_obj|}}
                     <li id='{{song_obj.mp3_link}}'>{{song_obj.mp3_link}}</li>
                 {{/each}}
                 </ol>
-                <ol id="name-list">
-                {{#each channel.queue as |song_obj|}}
-                    <li>{{song_obj.title}}</li>
-                {{/each}}
-                </ol>
+                <table style="width:100%">
+
+   {{#each channel.queue as |song_obj|}}
+   <tr>
+        <td> {{song_obj.title}} </td>
+    </tr>
+   {{/each}}
+</table>
         </div>
-        <div class="info-container">
-            <form id="add-song-form" method="POST" action="">
-            <fieldset>
-                <legend><h2>Add a song</h2></legend>
-                <input type='text' name='song'><br>
-                <br>
-                <input type='submit' value='Add'><br>
-            </fieldset>
-            </form>
-        </div>
+
+           </li>
+
+
+        </ul>
+
     </div>
+        
 </div>
 <script src="/public/js/channel-page.js"></script>
 <script type="text/javascript">
@@ -85,7 +99,7 @@
      // set the iframe video to play the current song
      $('#current-song').attr('src', urls[currentSongIndex]);
      $('#add-song-form').attr('action', '/channel/'+"{{channel._id}}");
-     $('.info-container').hide();
+     //$('.info-container').hide();
     console.log(urls);
     });
 
