@@ -1,5 +1,7 @@
 # Campfire
 
+https://umdcampfire.herokuapp.com/
+
 A Social Playlist Web Application where users create channels and others can tune in and contribute to the channel's playlist queue.
 
 Name: Robert Choe, Sandro Brognara, TJ Shrestha
@@ -90,7 +92,8 @@ var options = {
 ```
 
 ### 4. Modules 
-
+channelController module -> /controllers/channelController
+channel -> /models/channels.js
 
 ### 5. NPM Packages
 get-youtube-title
