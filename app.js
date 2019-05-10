@@ -19,8 +19,7 @@ var app = express();
 
 
 //setting up socket.io
-var http = require('http').Server(app);
-var io = require('socket.io')(http);
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
@@ -34,18 +33,18 @@ app.use('/api/v1/channels', channelRouter);
 
 
 Handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
-
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 //setting up mongoose connection
-
+/*
 const dbuser = process.env.CAMPFIREMONGODBUSER;
 const dbpass = process.env.CAMPFIREMONGODBPASSWORD;
 const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-ipths.mongodb.net/test?retryWrites=true`;
 mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
-	
 })
-
+*/
 http.listen(process.env.PORT || 3000, function() {
     console.log('app listening on port 3000!');
 });
