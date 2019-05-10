@@ -16,19 +16,20 @@ var channelRouter = require('./routes/api/v1/channels')
 //setting up express & handlebars
 
 var app = express();
-
-
-//setting up socket.io
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+
+//setting up socket.io
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/partials/"}));
 app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
+
 app.use('/', indexRouter);
-app.use('/', channelRouter);
+app.use('/api/v1/channels', channelRouter);
 
 
 
@@ -42,11 +43,11 @@ const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-ipths.mongodb.net/test?r
 mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
-	process.exit(1);
 })
 
-http.listen(3000, function() {
-    console.log('app listening on port 3000!');
+http.listen(process.env.PORT || 3000, function() {
+    console.log(process.env.PORT)
+    console.log('app listening on port!');
 });
 
 
