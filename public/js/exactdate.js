@@ -25,9 +25,11 @@
               let cur_day_arr = date_string[2].split('');
               if (cur_day_arr.length == 3) {
                 cur_day = "0" + cur_day_arr[0];
+
               }
               else {
-                cur_day = cur_day_arr.slice(0, 2);
+                let temp = cur_day_arr.slice(0, 2);
+                cur_day = temp.join('');
               }
 
               cur_month = months_short.indexOf(cur_month) + 1;
