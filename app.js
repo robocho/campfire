@@ -39,7 +39,8 @@ Handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 const dbuser = process.env.CAMPFIREMONGODBUSER;
 const dbpass = process.env.CAMPFIREMONGODBPASSWORD;
-const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-ipths.mongodb.net/test?retryWrites=true`;
+const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-n7nor.mongodb.net/test?retryWrites=true&w=majority`
+
 mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
