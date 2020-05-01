@@ -14,6 +14,12 @@ var getYoutubeTitle = require('get-youtube-title')
 router.get('/',function(req,res){
 	var ch = []
 
+	Channel.find({}, function(err,channels) {
+		if (err) { throw err };
+		res.render('home', {channels: channels})
+		
+	});
+	/*
 	// Callback function to wait for channel data from DB before rendering page
 	function getChannelData(callback) {
 		// Channel.find({},{"name":1, "_id":0}, function(err, channels) {
@@ -22,7 +28,8 @@ router.get('/',function(req,res){
 			ch = channels;
 			callback();
 		});
-	}
+	*/
+	});
 
 router.post('/', function(req, res){
 	var body = req.body;
@@ -83,11 +90,12 @@ router.post('/', function(req, res){
 	res.redirect('/');
 	*/
 });
-	
+/*	
 getChannelData(function(){
 	res.render('home', {channels: ch});
 	});
 });
+*/
 router.get('/create', function(req, res) {
 	res.render('create')
 })
