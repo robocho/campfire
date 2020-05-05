@@ -1,3 +1,4 @@
+require('dotenv').config()
 var express = require('express');
 var bodyParser = require('body-parser');
 var logger = require('morgan');
@@ -6,7 +7,6 @@ var exphbs = require('express-handlebars');
 const Handlebars = require('handlebars');
 var _ = require("underscore");
 var Channel = require('./models/channels');
-const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 require('dotenv').config()
 const port = 3000;
 
@@ -24,7 +24,7 @@ var io = require('socket.io')(http);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
-app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/partials/", handlebars: allowInsecurePrototypeAccess(Handlebars)}));
+app.engine('handlebars', exphbs({ defaultLayout: 'main', partialsDir: "views/partials/"}));
 app.set('view engine', 'handlebars');
 app.use('/public', express.static('public'));
 
@@ -39,8 +39,9 @@ Handlebars.registerHelper('dateFormat', require('handlebars-dateformat'));
 
 const dbuser = process.env.CAMPFIREMONGODBUSER;
 const dbpass = process.env.CAMPFIREMONGODBPASSWORD;
-const uri = "mongodb+srv://cmsc389k:cmsc389k@cluster0-n7nor.mongodb.net/test?retryWrites=true&w=majority"
-mongoose.connect(uri, {useNewUrlParser: true});
+const uri = `mongodb+srv://${dbuser}:${dbpass}@cluster0-n7nor.mongodb.net/test?retryWrites=true&w=majority`
+
+// mongoose.connect(uri, {useNewUrlParser: true, dbName: 'campfireDB'});
 
 mongoose.connection.on('error', function() {
 	console.log("Mongo db connect error");
